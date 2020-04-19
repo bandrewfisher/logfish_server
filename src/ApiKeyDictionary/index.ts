@@ -7,6 +7,8 @@ export interface ConnectionInfo {
 class ApiKeyDictionary {
   private keysToConnectionInfo: { [key: string]: ConnectionInfo } = {};
 
+  private socketIdToKey: { [key: string]: string } = {};
+
   contains(apiKey: string): boolean {
     return Object.keys(this.keysToConnectionInfo).includes(apiKey);
   }
@@ -23,6 +25,12 @@ class ApiKeyDictionary {
     this.keysToConnectionInfo[apiKey] = {
       socket,
     };
+    this.socketIdToKey[socket.id] = apiKey;
+  }
+
+  addPhoneNumber(phoneNumber: string, socket: Socket) {
+    const apiKey = this.socketIdToKey[socket.id];
+    this.keysToConnectionInfo[apiKey].phoneNumber = phoneNumber;
   }
 }
 

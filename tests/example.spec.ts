@@ -49,7 +49,7 @@ test('POST with malformed request body fails', async () => {
   expect(resp.status).toBe(400);
   expect(mockSocket.emit).toHaveBeenLastCalledWith('CONNECT', 'fakeuuid');
 });
-test.only('socket failure', async () => {
+test('socket failure', async () => {
   mockSocket.emit = jest.fn(() => {
     throw new Error('Bad socket');
   });
