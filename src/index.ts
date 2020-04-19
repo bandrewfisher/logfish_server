@@ -3,6 +3,9 @@ import http from 'http';
 import socket from 'socket.io';
 import { v4 } from 'uuid';
 
+// Socket events
+import addPhone from './socketEvents/addPhone';
+
 // Routes
 import routes from './routes';
 
@@ -21,6 +24,12 @@ export const init = () => {
     const key = process.env.NODE_ENV === 'development' ? 'DEV_KEY' : v4();
     ApiKeyDictionary.addConnection(key, sock);
     sock.emit('CONNECT', key);
+    sock.on('ADD-PHONE', (clientNumber) => {
+      addPhone(sock, clientNumber);
+    });
+    sock.on('error', () => {
+      console.log('there was an error');
+    });
   });
 
   Object.values(routes).forEach((route) => {
