@@ -15,7 +15,7 @@
     "sourceType": "module"
   },
   "plugins": ["@typescript-eslint"],
-  "noInlineConfig": true,
+  "noInlineConfig": false,
   "settings": {
     "import/resolver": {
       "node": {
