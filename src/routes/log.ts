@@ -3,7 +3,6 @@ import { Socket } from 'socket.io'; // eslint-disable-line no-unused-vars
 import { sendMessage } from '../twilio';
 
 import BadRequestError from '../HttpErrors/BadRequestError';
-import InternalError from '../HttpErrors/InternalError';
 import ApiKeyDictionary from '../ApiKeyDictionary';
 
 const router = express.Router();
@@ -50,7 +49,7 @@ router.route('/log').post(verifyRequest, async (req: Request, res: Response) => 
     }
     res.status(201).end();
   } catch (err) {
-    throw new InternalError('Socket failure');
+    res.status(500).json({ message: 'Socket error' });
   }
 });
 

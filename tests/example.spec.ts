@@ -4,9 +4,11 @@ import { init, app } from '../src';
 
 interface MockSocket {
   emit: jest.Mock;
+  on: jest.Mock;
 }
 const mockSocket: MockSocket = {
   emit: jest.fn(),
+  on: jest.fn(),
 };
 
 jest.mock('socket.io', () => jest.fn().mockReturnValue({
@@ -58,6 +60,4 @@ test('socket failure', async () => {
     .set('logfish-key', 'fakeuuid')
     .send({ data: 'log me' });
   expect(resp.status).toBe(500);
-  expect(mockSocket.emit).toHaveBeenLastCalledWith('CONNECT', 'fakeuuid');
-  mockSocket.emit = jest.fn();
 });
