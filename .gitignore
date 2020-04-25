@@ -1,5 +1,6 @@
 node_modules
 .vscode/
 .eslintcache
+lfServer.zip
 build
 jest_html_reporters.html

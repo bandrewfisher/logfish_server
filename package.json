@@ -7,7 +7,8 @@
     "test": "jest --clearCache && NODE_ENV=test jest --detectOpenHandles --colors",
     "lint": "eslint src/** tests/** --fix --cache --no-error-on-unmatched-pattern",
     "build": "rimraf ./build && tsc",
-    "start": "ts-node-dev --respawn --transpileOnly src/index.ts",
+    "start": "node build/index.js",
+    "start:dev": "ts-node-dev --respawn --transpileOnly src/index.ts",
     "start:prod": "npm run build && node ./build/index.js"
   },
   "author": "",

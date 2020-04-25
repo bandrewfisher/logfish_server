@@ -60,6 +60,5 @@ export const init = () => {
 
 if (process.env.NODE_ENV !== 'test') {
   init();
-  console.log('listening on port 5000');
-  server.listen(5000);
+  server.listen(8081);
 }
