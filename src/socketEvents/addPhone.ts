@@ -16,7 +16,7 @@ const listener = async (clientNumber: string) => {
   verifyNumber(clientNumber);
   const verificationCode = createVerificationCode();
 
-  await VerificationPhoneNumberDao.addVerificationCode(clientNumber, verificationCode);
+  VerificationPhoneNumberDao.addVerificationCode(clientNumber, verificationCode);
   await sendMessage(
     clientNumber,
     `Your Logfish verification code is ${verificationCode}`,

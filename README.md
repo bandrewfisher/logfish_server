@@ -45,44 +45,6 @@ export TWILIO_PHONE_NUM=YOUR_TWILIO_PHONE_NUMBER_HERE
 
 Replace YOUR_TWILIO_PHONE_NUMBER_HERE with the phone number you purchased. Make sure it includes the plus sign at the beginning and no spaces. For example, it might look something like +18015551234.
 
-## Set up a Dynamo Database on AWS
-
-The Twilio server uses a Dynamo DB to store phone numbers while waiting for the user to provide a verification code. If you do not have an AWS account, create one by following the instructions at [https://aws.amazon.com/premiumsupport/knowledge-center/create-and-activate-aws-account/](https://aws.amazon.com/premiumsupport/knowledge-center/create-and-activate-aws-account/).
-
-At the top of the AWS console, click on "Services" and then navigate to the Dynamo DB page by searching for "DynamoDB".
-
-![Dynamo page](images/dynamonav.png)
-
-Click on the "Create table" button. Call the table "VerificationPhoneNumbers" and call the partition key phoneNumber. Then click "Create".
-
-![Dynamo create table](images/create_table.png)
-
-## Set up AWS credentials locally
-
-You need to have some access keys locally so that you can access the Dynamo table you just made. Follow these instructions to create an IAM user: [https://docs.aws.amazon.com/IAM/latest/UserGuide/id_users_create.html#id_users_create_console](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_users_create.html#id_users_create_console). On step 11, make sure you download a csv files with the access key ID and secret access key.
-
-In your home directory, create a directory called `.aws`.
-
-```
-$ mkdir ~/.aws
-```
-
-Inside of that folder, create a file called `credentials`.
-
-```
-$ touch ~/.aws/credentials
-```
-
-Place the following into that `credentials` file:
-
-```
-[default]
-aws_access_key_id = YOUR_ACCESS_KEY_HERE
-aws_secret_access_key = YOUR_SECRET_ACCESS_KEY_HERE
-```
-
-Replace the values with the keys in the csv file you downloaded.
-
 ## Run the server locally
 
 Move into the directory where you cloned this repository and run:
@@ -101,8 +63,10 @@ The first option is to just change the NODE_ENV environment variable.
 $ NODE_ENV=production yarn start:dev
 ```
 
-The second option is to build the Typescript files and run the built files:
+The second option is to build the Typescript files and the serve up the built Javascript files by doing the following:
 
 ```
 $ yarn build && yarn start
 ```
+
+If you do this, your default key will not be DEV_KEY, but instead a UUID string.

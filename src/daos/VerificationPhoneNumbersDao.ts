@@ -1,11 +1,5 @@
-import AWS from 'aws-sdk';
 import moment from 'moment';
 
-AWS.config.update({
-  region: 'us-east-1',
-});
-
-const TableName = 'VerificationPhoneNumbers';
 
 const getExpirationString = (): string => {
   const expiration = new Date();
@@ -13,60 +7,31 @@ const getExpirationString = (): string => {
   return moment(expiration).format('YYYY-MM-DD:HH:mm:ss');
 };
 
-export interface VerificationPhoneRow {
-  phoneNumber: string;
+export interface VerificationPhoneInfo {
   verificationCode: string;
   verified: boolean;
   expiration: string;
 }
 class VerificationPhoneNumbersDao {
-  private docClient = new AWS.DynamoDB.DocumentClient();
+  private numbersToVerify: { [key: string]: VerificationPhoneInfo } = {};
 
-  async addVerificationCode(phoneNumber: string, verificationCode: string) {
-    const phoneRow: VerificationPhoneRow = {
-      phoneNumber,
+  addVerificationCode(phoneNumber: string, verificationCode: string) {
+    const phoneRow: VerificationPhoneInfo = {
       verificationCode,
       verified: false,
       expiration: getExpirationString(),
     };
 
-    const params: AWS.DynamoDB.DocumentClient.PutItemInput = {
-      TableName,
-      Item: phoneRow,
-    };
-    await this.docClient.put(params).promise();
+    this.numbersToVerify[phoneNumber] = phoneRow;
   }
 
-  async confirmCode(phoneNumber: string, verificationCode: string) {
-    const phoneRow = await this.getPhoneRow(phoneNumber);
+  confirmCode(phoneNumber: string, verificationCode: string) {
+    const phoneRow = this.numbersToVerify[phoneNumber];
     VerificationPhoneNumbersDao.verifyPhoneRow(phoneRow, verificationCode);
-
-    const updateParams: AWS.DynamoDB.DocumentClient.UpdateItemInput = {
-      TableName,
-      Key: {
-        phoneNumber,
-      },
-      UpdateExpression: 'set verified=:v',
-      ExpressionAttributeValues: {
-        ':v': true,
-      },
+    this.numbersToVerify[phoneNumber] = {
+      ...phoneRow,
+      verified: true,
     };
-    await this.docClient.update(updateParams).promise();
-  }
-
-  private async getPhoneRow(phoneNumber: string):
-    Promise<VerificationPhoneRow> {
-    const getPhoneParams: AWS.DynamoDB.DocumentClient.GetItemInput = {
-      TableName,
-      Key: {
-        phoneNumber,
-      },
-    };
-    const { Item } = await this.docClient.get(getPhoneParams).promise();
-    if (!Item) {
-      throw new Error('Invalid phone number supplied');
-    }
-    return (Item as VerificationPhoneRow);
   }
 
   private static validVerificationCode(dbCode: string, suppliedCode: string): boolean {
@@ -79,7 +44,7 @@ class VerificationPhoneNumbersDao {
     return now < expiration;
   }
 
-  private static verifyPhoneRow(phoneRow: VerificationPhoneRow, verificationCode: string) {
+  private static verifyPhoneRow(phoneRow: VerificationPhoneInfo, verificationCode: string) {
     if (!VerificationPhoneNumbersDao.validVerificationCode(phoneRow.verificationCode,
       verificationCode)) {
       throw new Error('Invalid verification code.');
