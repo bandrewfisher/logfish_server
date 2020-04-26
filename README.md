@@ -2,7 +2,7 @@
 
 The Logfish server provides a socket connection for Logfish clients via socket.io. The Logfish npm package simply issues a POST request to this server with data to log and an API key, and the server will send given data to the client socket with the associated API key.
 
-The easiest way to use Logfish is to download the npm package and then use the API key provided at logfish.dev. However, if you wish to set up the server locally, follow the instructions below.
+After you setup the server locally, you will need to setup the client locally by following the instructions here: [https://github.com/bandrewfisher/logfish_client](https://github.com/bandrewfisher/logfish_client). After you setup the client, you can download the Logfish npm package to start logging.
 
 ## Clone the repository and install dependencies
 
@@ -33,7 +33,7 @@ export TWILIO_ACCOUNT_SID=YOUR_ACCOUNT_SID_HERE
 export TWILIO_AUTH_TOKEN=YOUR_AUTH_TOKEN_HERE
 ```
 
-Past the actual values for your account SID and auth token where it says YOUR_ACCOUNT_SID_HERE and YOUR_AUTH_TOKEN_HERE.
+Paste the actual values for your account SID and auth token where it says YOUR_ACCOUNT_SID_HERE and YOUR_AUTH_TOKEN_HERE.
 
 Finally, you will need to purchase a Twilio phone number with SMS sending capabilities. Navigate to [https://www.twilio.com/console/phone-numbers/search](https://www.twilio.com/console/phone-numbers/search), check the box that says "SMS", and search. Purchase whatever number you want, and then copy the phone number. We will need to add that as an environment variable too.
 

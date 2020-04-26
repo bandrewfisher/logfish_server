@@ -4,3 +4,4 @@ node_modules
 lfServer.zip
 build
 jest_html_reporters.html
+.ebextensions
