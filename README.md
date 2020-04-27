@@ -2,7 +2,7 @@
 
 The Logfish server provides a socket connection for Logfish clients via socket.io. The Logfish npm package simply issues a POST request to this server with data to log and an API key, and the server will send given data to the client socket with the associated API key.
 
-After you setup the server locally, you will need to setup the client locally by following the instructions here: [https://github.com/bandrewfisher/logfish_client](https://github.com/bandrewfisher/logfish_client). After you setup the client, you can download the Logfish npm package to start logging.
+After you setup the server locally, you will need to setup the client locally by following the instructions here: [https://github.com/bandrewfisher/logfish_client](https://github.com/bandrewfisher/logfish_client). After you setup the client, you can download the Logfish npm package to start logging: [https://www.npmjs.com/package/logfish](https://www.npmjs.com/package/logfish)
 
 ## Clone the repository and install dependencies
 
